@@ -5,8 +5,6 @@
 
 #define I2C_ADDR 0x70
 
-uint16_t cmd;
-
 byte _crc8(byte data[], int len) {
   byte crc = 0xFF;
 
@@ -29,7 +27,7 @@ uint16_t _recv() {
     buf[i] = Wire.read();
 
   if (buf[2] != _crc8(buf, 2))
-    return 0;
+    return INVALID;
 
   uint16_t j = buf[0];
   j <<= 8;
@@ -37,7 +35,7 @@ uint16_t _recv() {
   return j;
 }
 
-void _send() {
+void _send(uint16_t cmd) {
   Wire.beginTransmission(I2C_ADDR);
   Wire.write(cmd);
   Wire.endTransmission();
@@ -64,14 +62,14 @@ float SHTC3::getTemperature() {
 }
 
 void SHTC3::readSample() {
-  static const uint16_t mc = {
+  static const uint16_t cmd = {
     {0x7866, 0x58E0, 0x7CA2, 0x5C24},
     {0x609C, 0x401A, 0x6458, 0x44DE}
   };
 
   wakeup();
-  cmd = mc[low_power][rh_first+clock_stretch]
-  _send();
+  delay(1);
+  _send(cmd[low_power][rh_first+clock_stretch]);
   if (!clock_stretch)
     delay(low_power ? 2 : 20);
   uint16_t a = _recv();
@@ -89,23 +87,18 @@ void SHTC3::readSample() {
 }
 
 bool SHTC3::ready() {
-  cmd = 0xEFC8;
-  _send();
-  return _recv() > 0;
+  _send(0xEFC8);
+  return _recv() != INVALID;
 }
 
 void SHTC3::reset() {
-  cmd = 0x805D;
-  _send();
+  _send(0x805D);
 }
 
 void SHTC3::sleep() {
-  cmd = 0xB098;
-  _send();
+  _send(0xB098);
 }
 
 void SHTC3::wakeup() {
-  cmd = 0x3517;
-  _send();
-  delay(1);
+  _send(0x3517);
 }

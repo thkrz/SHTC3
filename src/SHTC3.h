@@ -9,15 +9,18 @@ class SHTC3 {
     float srh;
     float st;
   public:
+    static const uint16_t INVALID = 0xFFFF;
+
     bool begin();
 
     float getHumidity();
     float getTemperature();
     void readSample();
+
     bool ready();
     void reset();
     void sleep();
     void wakeup();
-}
+};
 
 #endif /* _SHTC3_H */
