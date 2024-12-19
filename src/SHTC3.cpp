@@ -82,8 +82,8 @@ void SHTC3::readSample() {
     a = c;
   }
 
-  st = 175.0 * st / (1<<16) - 45.0;
-  srh = 100.0 * srh / (1<<16);
+  st = 175.0 * a / (1<<16) - 45.0;
+  srh = 100.0 * b / (1<<16);
 }
 
 bool SHTC3::ready() {
