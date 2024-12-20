@@ -3,24 +3,19 @@
 
 class SHTC3 {
   private:
-    int clock_stretch;
-    int rh_first;
-    int low_power;
-    float srh;
-    float st;
+    static float srh;
+    static float st;
   public:
-    static const uint16_t INVALID = 0xFFFF;
+    static bool begin();
 
-    bool begin();
+    static float getHumidity();
+    static float getTemperature();
+    static void readSample(bool clock_stretch = true, bool low_power = false, bool rh_first = false);
 
-    float getHumidity();
-    float getTemperature();
-    void readSample();
-
-    bool ready();
-    void reset();
-    void sleep();
-    void wakeup();
+    static bool ready();
+    static void reset();
+    static void sleep();
+    static void wakeup();
 };
 
 #endif /* _SHTC3_H */
