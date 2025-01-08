@@ -5,7 +5,7 @@
 ### `begin()`
 
 Resets the sensor in a well-defined state, verifies the presence of the
-sensor and proper communication, and puts it to sleep. begin() should be called before
+sensor and proper communication, and puts it to sleep. begin() should be called once before
 readSample().
 
 #### Syntax
