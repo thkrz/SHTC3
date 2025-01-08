@@ -32,7 +32,7 @@ SHTC3.readSample(bool clock_stretch = true, bool low_power = false, bool rh_firs
 
 ### `getTemperature()`
 
-Get the temperature value. This is only a valid value after calling readSample().
+Get the temperature value. This is only a valid value if called after readSample().
 
 #### Syntax
 
@@ -45,7 +45,7 @@ the temperature value.
 
 ### `getHumidity()`
 
-Get the humidity value. This is only a valid value after calling readSample().
+Get the humidity value. This is only a valid value if called after readSample().
 
 #### Syntax
 
