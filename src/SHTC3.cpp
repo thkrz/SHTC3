@@ -46,7 +46,11 @@ void _send(uint16_t cmd) {
 static bool SHTC3::begin() {
   reset();
   delay(1);
-  return ready();
+  if (ready()) {
+    sleep();
+    return true;
+  }
+  return false;
 }
 
 static float SHTC3::getHumidity() {
