@@ -5,6 +5,8 @@
 
 #define I2C_ADDR 0x70
 
+_SHTC3 SHTC3;
+
 byte _crc8(byte data[], int len) {
   byte crc = 0xFF;
 
@@ -32,7 +34,7 @@ bool _recv(uint16_t *j) {
   if (j != NULL) {
     *j = buf[0];
     *j <<= 8;
-    *j |= buf[1]
+    *j |= buf[1];
   }
   return true;
 }
@@ -43,7 +45,7 @@ void _send(uint16_t cmd) {
   Wire.endTransmission();
 }
 
-static bool SHTC3::begin() {
+bool _SHTC3::begin() {
   reset();
   delay(1);
   if (ready()) {
@@ -53,16 +55,16 @@ static bool SHTC3::begin() {
   return false;
 }
 
-static float SHTC3::getHumidity() {
+float _SHTC3::getHumidity() {
   return srh;
 }
 
-static float SHTC3::getTemperature() {
+float _SHTC3::getTemperature() {
   return st;
 }
 
-static void SHTC3::readSample(bool clock_stretch = true, bool low_power = false, bool rh_first = false) {
-  static const uint16_t cmd = {
+void _SHTC3::readSample(bool clock_stretch, bool low_power, bool rh_first) {
+  const uint16_t cmd[2][4] = {
     {0x7866, 0x58E0, 0x7CA2, 0x5C24},
     {0x609C, 0x401A, 0x6458, 0x44DE}
   };
@@ -91,19 +93,19 @@ static void SHTC3::readSample(bool clock_stretch = true, bool low_power = false,
   srh = 100.0 * b / (1<<16);
 }
 
-static bool SHTC3::ready() {
+bool _SHTC3::ready() {
   _send(0xEFC8);
   return _recv(NULL);
 }
 
-static void SHTC3::reset() {
+void _SHTC3::reset() {
   _send(0x805D);
 }
 
-static void SHTC3::sleep() {
+void _SHTC3::sleep() {
   _send(0xB098);
 }
 
-static void SHTC3::wakeup() {
+void _SHTC3::wakeup() {
   _send(0x3517);
 }
