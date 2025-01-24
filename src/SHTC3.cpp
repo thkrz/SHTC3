@@ -24,9 +24,9 @@ byte _crc8(byte data[], int len) {
 bool _recv(uint16_t *j) {
   byte buf[3];
 
-  int n = Wire.requestFrom(I2C_ADDR, 3);
-  for (int i = 0; i < n; i++)
-    buf[i] = Wire.read();
+  Wire.requestFrom(I2C_ADDR, 3, false);
+  for (int i = 0; Wire.available() && i < 3; i++)
+      buf[i] = Wire.read();
 
   if (buf[2] != _crc8(buf, 2))
     return false;
@@ -40,8 +40,12 @@ bool _recv(uint16_t *j) {
 }
 
 void _send(uint16_t cmd) {
+  byte buf[2];
+
+  buf[1] = cmd & 0xFF;
+  buf[0] = cmd >> 8;
   Wire.beginTransmission(I2C_ADDR);
-  Wire.write(cmd);
+  Wire.write(buf, 2);
   Wire.endTransmission();
 }
 
