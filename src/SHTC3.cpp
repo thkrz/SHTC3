@@ -60,11 +60,11 @@ bool _SHTC3::begin() {
 }
 
 float _SHTC3::getHumidity() {
-  return srh;
+  return _srh;
 }
 
 float _SHTC3::getTemperature() {
-  return st;
+  return _st;
 }
 
 void _SHTC3::readSample(bool clock_stretch, bool low_power, bool rh_first) {
@@ -93,8 +93,8 @@ void _SHTC3::readSample(bool clock_stretch, bool low_power, bool rh_first) {
     a = c;
   }
 
-  st = 175.0 * a / (1<<16) - 45.0;
-  srh = 100.0 * b / (1<<16);
+  _st = 175.0 * a / (1<<16) - 45.0;
+  _srh = 100.0 * b / (1<<16);
 }
 
 bool _SHTC3::ready() {

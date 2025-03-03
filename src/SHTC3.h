@@ -3,8 +3,8 @@
 
 class _SHTC3 {
   private:
-    float srh;
-    float st;
+    float _srh;
+    float _st;
   public:
     bool begin();
 
