@@ -76,6 +76,11 @@ float _SHTC3::getTemperature() {
   return _st;
 }
 
+float _SHTC3::getVPD() {
+  float svp = 0.61078f * exp(17.2694f * _st / (_st + 237.3f));
+  return svp * (1.0f - _srh / 100.0f);
+}
+
 void _SHTC3::readSample(bool clock_stretch, bool low_power, bool rh_first) {
   int i = (int)low_power;
   int j = (int)rh_first;
@@ -96,8 +101,8 @@ void _SHTC3::readSample(bool clock_stretch, bool low_power, bool rh_first) {
     a[1] = c;
   }
 
-  _st = 175.0 * a[0] / (1<<16) - 45.0;
-  _srh = 100.0 * a[1] / (1<<16);
+  _st = 175.0f * a[0] / (1<<16) - 45.0f;
+  _srh = 100.0f * a[1] / (1<<16);
 }
 
 bool _SHTC3::ready() {
