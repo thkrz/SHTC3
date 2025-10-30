@@ -10,6 +10,7 @@ class _SHTC3 {
 
     float getHumidity();
     float getTemperature();
+    float getVPD();
     void readSample(bool clock_stretch = true, bool low_power = false, bool rh_first = false);
 
     bool ready();
